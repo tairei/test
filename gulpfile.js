@@ -9,6 +9,8 @@ const webpack = require('webpack-stream');
 const browserSync = require('browser-sync').create();
 const runSequence = require('run-sequence');
 const cssmin = require('gulp-cssmin');
+const ejs = require("gulp-ejs");
+const rename = require('gulp-rename')
 
 const options = {
   SRC_PATH: './src',
@@ -136,4 +138,13 @@ gulp.task('build', () => {
     'minify:js',
     'minify:css'
   );
+});
+
+gulp.task("ejs", function() {
+    gulp.src(
+       ["src/ejs/**/*.ejs",'!' + "src/ejs/**/_*.ejs"] //参照するディレクトリ、出力を除外するファイル
+    )
+    .pipe(ejs())
+    .pipe(rename({extname: '.html'}))　//出力ファイル名パターン
+    .pipe(gulp.dest("public/html")) //出力先
 });
